@@ -1,0 +1,7 @@
+{
+  "name": "Remix: CitiScope Admin Dashboard",
+  "description": "National Multi-Tier Civic Intelligence and Public Infrastructure Management Platform",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
