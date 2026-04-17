@@ -29,7 +29,11 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   technician: [
     'view_assigned',
     'view_iot'
-  ]
+  ],
+  employee: [
+    'view_assigned'
+  ],
+  citizen: []
 };
 
 export const hasPermission = (userRole: UserRole | null, permission: Permission): boolean => {

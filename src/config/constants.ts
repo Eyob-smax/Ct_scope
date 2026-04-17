@@ -1,7 +1,7 @@
 export const APP_NAME = 'CitiScope Admin';
 export const APP_DESCRIPTION = 'Government Civic Intelligence Dashboard';
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://incident-report-backend-cyep.onrender.com/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://incident-report-backend-cyep.onrender.com';
 
 export const ROUTES = {
   DASHBOARD: '/',

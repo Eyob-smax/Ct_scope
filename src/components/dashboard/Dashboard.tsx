@@ -68,26 +68,45 @@ export default function Dashboard() {
     );
   }
 
+  const totals = dashboardData?.totals;
+  const openIssues = (totals?.reported ?? 0) + (totals?.verified ?? 0);
+
   const stats = [
-    { label: 'Total Issues', value: dashboardData?.stats.total_issues.toLocaleString() || '0', icon: AlertCircle, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { label: 'Open Issues', value: dashboardData?.stats.pending_issues.toLocaleString() || '0', icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-500/10' },
-    { label: 'In Progress', value: '0', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' },
-    { label: 'Resolved', value: dashboardData?.stats.resolved_issues.toLocaleString() || '0', icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-500/10' },
+    { label: 'Total Issues', value: (totals?.total ?? 0).toLocaleString(), icon: AlertCircle, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+    { label: 'Open Issues', value: openIssues.toLocaleString(), icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-500/10' },
+    { label: 'In Progress', value: (totals?.in_progress ?? 0).toLocaleString(), icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+    { label: 'Resolved', value: (totals?.resolved ?? 0).toLocaleString(), icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-500/10' },
   ];
 
   const statusData = [
-    { name: 'Open', value: dashboardData?.stats.pending_issues || 0, color: '#ef4444' },
-    { name: 'Resolved', value: dashboardData?.stats.resolved_issues || 0, color: '#10b981' },
-    { name: 'Technicians', value: dashboardData?.stats.active_technicians || 0, color: '#3b82f6' },
+    { name: 'Open', value: openIssues, color: '#ef4444' },
+    { name: 'In Progress', value: totals?.in_progress ?? 0, color: '#f59e0b' },
+    { name: 'Resolved', value: totals?.resolved ?? 0, color: '#10b981' },
   ];
 
-  const categoryData = [
-    { name: 'Road', value: 40, color: '#3b82f6' },
-    { name: 'Water', value: 30, color: '#0ea5e9' },
-    { name: 'Electricity', value: 20, color: '#eab308' },
-    { name: 'Garbage', value: 10, color: '#f97316' },
-    { name: 'Drainage', value: 5, color: '#8b5cf6' },
+  const categoryPalette: Record<string, string> = {
+    road: '#3b82f6',
+    water: '#0ea5e9',
+    electricity: '#eab308',
+    waste: '#f97316',
+    drainage: '#8b5cf6',
+    public_facility: '#14b8a6',
+    other: '#94a3b8',
+  };
+  const fallbackCategoryData = [
+    { name: 'Road', value: 40, color: categoryPalette.road },
+    { name: 'Water', value: 30, color: categoryPalette.water },
+    { name: 'Electricity', value: 20, color: categoryPalette.electricity },
+    { name: 'Waste', value: 10, color: categoryPalette.waste },
+    { name: 'Drainage', value: 5, color: categoryPalette.drainage },
   ];
+  const categoryData = dashboardData?.by_category?.length
+    ? dashboardData.by_category.map((row) => ({
+        name: row.category.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+        value: row.count,
+        color: categoryPalette[row.category] ?? categoryPalette.other,
+      }))
+    : fallbackCategoryData;
 
   return (
     <div className="space-y-6">
@@ -137,7 +156,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={dashboardData?.trends || mockChartData}>
+                <AreaChart data={mockChartData}>
                   <defs>
                     <linearGradient id="colorIssues" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>

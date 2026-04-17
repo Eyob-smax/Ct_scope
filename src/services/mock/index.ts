@@ -115,7 +115,7 @@ export const mockIssues: Issue[] = [
     id: 'ISS-004',
     title: 'Illegal Garbage Dumping',
     description: 'Large pile of waste dumped in a residential area in Yeka. Health hazard and bad odor.',
-    category: 'garbage',
+    category: 'waste',
     status: 'assigned',
     priority: 'medium',
     latitude: 9.021,

@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { adminSignupSchema, type AdminSignupValues } from "@/lib/validation/auth.schema";
+import { AuthRepository } from "@/repositories";
+import { ApiErrorClass } from "@/types/api";
 
 export function AdminSignupForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,17 +16,20 @@ export function AdminSignupForm() {
 
   async function onSubmit(data: AdminSignupValues) {
     setIsLoading(true);
-    console.log("Preparing payload for POST /api/auth/signup-admin:", data);
-
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
+      await AuthRepository.signupAdmin({
+        phone: data.phone,
+        full_name: data.full_name,
+        password: data.password,
+        admin_unit_id: data.admin_unit_id,
+      });
       toast.success("Admin account created successfully");
-      // Form reset is handled by the Form component's methods if needed, 
-      // but the custom Form wrapper doesn't expose it easily unless we use the children function.
     } catch (error) {
-      toast.error("Failed to create admin account. Please try again.");
+      const message =
+        error instanceof ApiErrorClass
+          ? error.message
+          : "Failed to create admin account. Please try again.";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

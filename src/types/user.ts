@@ -1,4 +1,11 @@
-export type UserRole = 'federal_admin' | 'regional_admin' | 'zonal_admin' | 'woreda_admin' | 'technician';
+export type UserRole =
+  | 'federal_admin'
+  | 'regional_admin'
+  | 'zonal_admin'
+  | 'woreda_admin'
+  | 'technician'
+  | 'employee'
+  | 'citizen';
 
 export interface User {
   id: string;
@@ -10,4 +17,9 @@ export interface User {
   woreda: string;
   phone: string;
   status: 'active' | 'inactive';
+  fullName?: string;
+  isActive?: boolean;
+  isVerified?: boolean;
+  adminUnitId?: string | null;
+  language?: string;
 }

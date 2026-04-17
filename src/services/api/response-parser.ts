@@ -120,12 +120,12 @@ export const parseApiResponse = <T>(
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new ApiErrorClass(
-          `Response validation failed: ${error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')}`,
+          `Response validation failed: ${error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')}`,
           'RESPONSE_VALIDATION_ERROR',
           500,
           { 
             context: options.context,
-            validationErrors: error.errors,
+            validationErrors: error.issues,
             receivedData: data
           }
         );

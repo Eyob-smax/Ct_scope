@@ -9,10 +9,17 @@ export const useTechnicianTasks = () => {
   });
 };
 
-export const useUnassignedTasks = () => {
+export const useUnfinishedTasks = () => {
   return useQuery({
-    queryKey: ['technician', 'tasks', 'unassigned'],
-    queryFn: () => TechnicianRepository.getUnassignedTasks(),
+    queryKey: ['technician', 'tasks', 'unfinished'],
+    queryFn: () => TechnicianRepository.getUnfinishedTasks(),
+  });
+};
+
+export const useFinishedTasks = () => {
+  return useQuery({
+    queryKey: ['technician', 'tasks', 'finished'],
+    queryFn: () => TechnicianRepository.getFinishedTasks(),
   });
 };
 

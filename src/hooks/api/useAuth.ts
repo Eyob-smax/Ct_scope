@@ -10,7 +10,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) => AuthRepository.login(data),
     onSuccess: (data) => {
-      setAuth(data.user, data.access_token, data.refresh_token);
+      setAuth(data.user, data.accessToken, data.refreshToken);
       toast.success('Logged in successfully');
     },
     onError: (error: any) => {
